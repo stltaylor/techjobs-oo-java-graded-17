@@ -3,6 +3,7 @@ package org.launchcode.techjobs.oo;
 
 import org.junit.Test;
 
+import static java.lang.System.lineSeparator;
 import static org.junit.Assert.*;
 
 public class JobTest {
@@ -18,7 +19,7 @@ public class JobTest {
     public void testJobConstructorSetsAllFields() {
         Job test_job = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
 
-        assertEquals(3, test_job.getId());
+        assertEquals(6, test_job.getId());
         assertEquals(test_job.getName(), "Product tester");
         assertEquals(test_job.getEmployer().getValue(), "ACME");
         assertEquals(test_job.getLocation().getValue(), "Desert");
@@ -39,4 +40,42 @@ public class JobTest {
 
         assertFalse(test_job.equals(test_job2));
     }
+
+    @Test
+    public void testToStringStartsAndEndsWithNewLine() {
+        Job test_job = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String test = test_job.toString();
+
+        assertTrue(test.startsWith(lineSeparator()));
+        assertTrue(test.endsWith(lineSeparator()));
+    }
+
+    @Test
+    public void testToStringContainsCorrectLabelsAndData() {
+        Job test_job = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String test = test_job.toString();
+
+        assertTrue(test.contains("ID:"));
+        assertTrue(test.contains("Name: Product tester"));
+        assertTrue(test.contains("Employer: ACME"));
+        assertTrue(test.contains("Location: Desert"));
+        assertTrue(test.contains("Position Type: Quality control"));
+        assertTrue(test.contains("Core Competency: Persistence"));
+
+    }
+
+    @Test
+    public void testToStringHandlesEmptyField() {
+        Job test_job = new Job("", new Employer(""), new Location(""), new PositionType(""), new CoreCompetency(""));
+        String test = test_job.toString();
+
+        assertTrue(test.contains("ID:"));
+        assertTrue(test.contains("Name: Data not available"));
+        assertTrue(test.contains("Employer: Data not available"));
+        assertTrue(test.contains("Location: Data not available"));
+        assertTrue(test.contains("Position Type: Data not available"));
+        assertTrue(test.contains("Core Competency: Data not available"));
+
+    }
+
 }
